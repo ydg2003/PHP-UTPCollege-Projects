@@ -3,11 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" href="style.css">
     <title>Formulario de Registro</title>
 </head>
 <body>
     <h1>Formulario de Registro al Evento Tecnológico</h1>
+
+    <?php
+    // Connect to the database
+    $conn = new mysqli('localhost', 'root', '', 'evento');
+
+    if ($conn->connect_error) {
+        die("Error de conexión: " . $conn->connect_error);
+    }
+
+    // Fetch countries and nationalities from the database
+    $sql = "SELECT pais_residencia, nacionalidad FROM paises_y_nacionalidades";
+    $result = $conn->query($sql);
+    
+    $countries = [];
+    $nationalities = [];
+    
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $countries[] = $row['pais_residencia'];
+            $nationalities[] = $row['nacionalidad'];
+        }
+    }
+    $conn->close();
+    ?>
+
     <form action="variable.php" method="POST">
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required><br><br>
@@ -24,36 +49,24 @@
         <input type="radio" id="femenino" name="sexo" value="Femenino" required>
         <label for="femenino">Femenino</label><br><br>
 
-        <!-- Drop-down for País de Residencia -->
         <label for="pais_residencia">País de Residencia:</label>
         <select id="pais_residencia" name="pais_residencia" required>
             <option value="">Seleccione su país</option>
-            <option value="Panamá">Panamá</option>
-            <option value="Argentina">Argentina</option>
-            <option value="Brasil">Brasil</option>
-            <option value="Chile">Chile</option>
-            <option value="Colombia">Colombia</option>
-            <option value="Costa Rica">Costa Rica</option>
-            <option value="México">México</option>
-            <option value="Perú">Perú</option>
-            <option value="España">España</option>
-            <option value="Estados Unidos">Estados Unidos</option>
+            <?php
+            foreach ($countries as $pais) {
+                echo "<option value=\"$pais\">$pais</option>";
+            }
+            ?>
         </select><br><br>
 
-        <!-- Drop-down for Nacionalidad -->
         <label for="nacionalidad">Nacionalidad:</label>
         <select id="nacionalidad" name="nacionalidad" required>
             <option value="">Seleccione su nacionalidad</option>
-            <option value="Panameña">Panameña</option>
-            <option value="Argentina">Argentina</option>
-            <option value="Brasileña">Brasileña</option>
-            <option value="Chilena">Chilena</option>
-            <option value="Colombiana">Colombiana</option>
-            <option value="Costarricense">Costarricense</option>
-            <option value="Mexicana">Mexicana</option>
-            <option value="Peruana">Peruana</option>
-            <option value="Española">Española</option>
-            <option value="Estadounidense">Estadounidense</option>
+            <?php
+            foreach ($nationalities as $nacionalidad) {
+                echo "<option value=\"$nacionalidad\">$nacionalidad</option>";
+            }
+            ?>
         </select><br><br>
 
         <label for="celular">Celular:</label>
@@ -62,6 +75,7 @@
         <label for="correo">Correo Electrónico:</label>
         <input type="email" id="correo" name="correo" required><br><br>
 
+        <!-- Updated section with all the requested technology topics -->
         <label>Tema Tecnológico que le gustaría aprender:</label><br>
         <input type="checkbox" id="web" name="temas[]" value="Desarrollo web">
         <label for="web">Desarrollo web</label><br>
@@ -75,12 +89,33 @@
         <input type="checkbox" id="ia" name="temas[]" value="Inteligencia artificial">
         <label for="ia">Inteligencia artificial</label><br>
 
-        <!-- Continue adding other topics... -->
-        
+        <input type="checkbox" id="seguridad" name="temas[]" value="Seguridad informática">
+        <label for="seguridad">Seguridad informática</label><br>
+
+        <input type="checkbox" id="devops" name="temas[]" value="DevOps">
+        <label for="devops">DevOps</label><br>
+
+        <input type="checkbox" id="iot" name="temas[]" value="Internet de las cosas">
+        <label for="iot">Internet de las cosas</label><br>
+
+        <input type="checkbox" id="blockchain" name="temas[]" value="Blockchain">
+        <label for="blockchain">Blockchain</label><br>
+
+        <input type="checkbox" id="data" name="temas[]" value="Ciencia de datos">
+        <label for="data">Ciencia de datos</label><br>
+
+        <input type="checkbox" id="robotica" name="temas[]" value="Robótica">
+        <label for="robotica">Robótica</label><br>
+
+        <input type="checkbox" id="rvra" name="temas[]" value="Realidad virtual/aumentada">
+        <label for="rvra">Realidad virtual/aumentada</label><br>
+
+        <input type="checkbox" id="programacion" name="temas[]" value="Programación">
+        <label for="programacion">Programación</label><br><br>
+
         <label for="observaciones">Observaciones o Consulta sobre el evento:</label><br>
         <textarea id="observaciones" name="observaciones" rows="4" cols="50"></textarea><br><br>
 
-        <!-- Auto-set the current date using PHP -->
         <label for="fecha">Fecha del Formulario:</label>
         <input type="text" id="fecha" name="fecha" value="<?php echo date('Y-m-d'); ?>" readonly><br><br>
 
