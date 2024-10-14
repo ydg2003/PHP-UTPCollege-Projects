@@ -1,30 +1,31 @@
 <?php
 include_once("clases/cEmpleado.php");
 
-//creamos el objeto $objempleados de la clase cEmpleado
-$objempleados=new cEmpleado;
+// Creamos el objeto $objempleados de la clase cEmpleado
+$objempleados = new cEmpleado();
 
-//la variable $lista consulta todos los empleados
-$lista= $objempleados->consultar();
+// La variable $lista consulta todos los empleados
+$lista = $objempleados->consultar();
 
+// Check if the query returned any results
+if ($lista) {
+    echo '<table style="border:1px solid #FF0000; color:#000099;width:400px;">';
+    echo '<tr style="background:#99CCCC;">
+            <td>Nombres</td>
+            <td>Departamento</td>
+            <td>Sueldo</td>
+          </tr>';
+    
+    // Fetch each row as an object using fetch()
+    while ($ad = $lista->fetch(PDO::FETCH_OBJ)) { // Use PDO::FETCH_OBJ to fetch as object
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($ad->nombres) . "</td>"; // Corrected to 'nombres'
+        echo "<td>" . htmlspecialchars($ad->departamento) . "</td>";
+        echo "<td>" . htmlspecialchars($ad->sueldo) . "</td>";
+        echo "</tr>";
+    }
+    echo '</table>';
+} else {
+    echo "No employees found.";
+}
 ?>
-<table style="border:1px solid #FF0000; color:#000099;width:400px;">
-<tr style="background:#99CCCC;">
-<td>Nombres</td>
-<td>Departamento</td>
-<td>Sueldo</td>
-</tr>
-<?php
-while($ad = $sql->objects('',$lista)){
-
-  echo "<tr>";
-  echo "<td>".$ad->nombre."</td>";
-  echo "<td>".$ad->departamento."</td>";
-  echo "<td>".$ad->sueldo."</td>";
-  echo "</tr>";
-
-}//fin del mientras
-
-
-?>
-</table>

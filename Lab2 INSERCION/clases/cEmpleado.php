@@ -2,39 +2,42 @@
 include("clases/setting.inc.php");
 $sql = new mod_db();
 
-//implementamos la clase empleado
-class cEmpleado{
- //constructor	
- function cEmpleado(){
- }	
- 
- // consulta los empledos de la BD
- function consultar(){
-   //creamos el objeto $con a partir de la clase DBManager
-   global $sql;
-   //usamos el metodo conectar para realizar la conexion
-     $consulta = "select * from  empleado  order by nombre";
-	 	$ad_query = $sql->query($consulta);
-	 
-	 if (!$ad_query)
-	   return false;
-	 else
-	   return $result;
+// Implementamos la clase empleado
+class cEmpleado {
+    // Constructor
+    function __construct() {
+        // Initialization if needed
+    }    
+    
+    // Consulta los empleados de la BD
+    function consultar() {
+        // Creamos el objeto $con a partir de la clase DBManager
+        global $sql;
 
- }
- //inserta un nuevo empleado en la base de datos
- function crear($nom,$dep,$suel){
-   global $sql;
-   
-      		$cols= "nombre,departamento,sueldo ";
-			$val = "'$nom','$dep','$suel'";
-			$sql->insert("empleado",$cols,$val,"");
+        // Usamos el método conectar para realizar la conexión
+        $consulta = "SELECT * FROM empleados ORDER BY nombres";
+        $ad_query = $sql->query($consulta);
+        
+        // Check if query was successful
+        if (!$ad_query) {
+            return false;
+        } else {
+            return $ad_query; // Return the result set
+        }
+    }
 
-       	
-		if ($sql->insert("empleado",$cols,$val,""))
-		return true;
-		else return false;
-		
-}//Fin de la Funci�n crear($nom,$dep,$suel)
+    // Inserta un nuevo empleado en la base de datos
+    function crear($nom, $dep, $suel) {
+        global $sql;
+        
+        $cols = "nombres, departamento, sueldo"; // Fixed column name 'nombre' to 'nombres'
+        $val = "'$nom', '$dep', '$suel'";
+        
+        if ($sql->insert("empleados", $cols, $val, "")) { // Changed table name from 'empleado' to 'empleados'
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 ?>
