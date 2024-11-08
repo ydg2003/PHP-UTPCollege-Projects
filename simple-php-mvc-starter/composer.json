@@ -1,0 +1,17 @@
+{
+    "name": "diazj/simple-php-mvc-starter",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Fidel Diaz",
+            "email": "fidel.diaz@utp.ac.pa"
+        }
+    ],
+    "require": {
+        "monolog/monolog": "3.0.*"
+    }
+}
