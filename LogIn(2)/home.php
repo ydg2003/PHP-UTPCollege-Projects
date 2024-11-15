@@ -13,8 +13,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
         <h1>Hello, <?php echo $_SESSION['user_name']; ?></h1>
         <p>
             <ul>
-                <li><a href="form.php">Formulario de Evento</a></li>
-                <li><a href="record.php">Registro</a></li>
+                <li><a href="form.php">Event Form</a></li>
+                <li><a href="record.php">Record</a></li>
+                <li><a href="user_settings.php">User settings</a></li>
             </ul>
         </p>
         <a href="logout.php">Logout</a>

@@ -1,7 +1,10 @@
 <?php
 session_start();
-include "db_conn.php";
 
+// Include the database connection file
+require_once 'db_conn.php';
+$db = new PDO("mysql:host=localhost;dbname=evento", "root", "");
+// Check if form data is set
 if (isset($_POST['uname']) && isset($_POST['password'])) {
     function validate($data) {
         $data = trim($data);
@@ -13,6 +16,7 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
     $uname = validate($_POST['uname']);
     $pass = validate($_POST['password']);
 
+    // Validate input
     if (empty($uname)) {
         header("Location: index.php?error=User Name is required");
         exit();
@@ -20,12 +24,20 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
         header("Location: index.php?error=Password is required");
         exit();
     } else {
-        $sql = "SELECT * FROM users WHERE user_name='$uname' AND password='$pass'";
-        $result = mysqli_query($conn, $sql);
+        // Use the connection from the DBConnection object
+        $sql = "SELECT * FROM users WHERE user_name = :uname";
+        $stmt = $db->prepare($sql); // Prepare the SQL statement
 
-        if (mysqli_num_rows($result) === 1) {
-            $row = mysqli_fetch_assoc($result);
-            if ($row['user_name'] === $uname && $row['password'] === $pass) {
+        // Bind the parameter
+        $stmt->bindParam(':uname', $uname, PDO::PARAM_STR);
+
+        // Execute the statement
+        if ($stmt->execute()) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Check if user exists
+            if ($row && $row['password'] === $pass) {
+                // Start session for logged-in user
                 $_SESSION['user_name'] = $row['user_name'];
                 $_SESSION['id'] = $row['id'];
                 header("Location: home.php");
@@ -35,7 +47,7 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
                 exit();
             }
         } else {
-            header("Location: index.php?error=Incorrect User name or password");
+            header("Location: index.php?error=Database query failed");
             exit();
         }
     }

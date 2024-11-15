@@ -1,3 +1,4 @@
+<!-- form.php -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,31 +9,24 @@
 </head>
 <body>
     <h1>Formulario de Registro al Evento Tecnológico</h1>
-
     <?php
+    require_once 'db_conn.php';
     // Connect to the database
-    $conn = new mysqli('localhost', 'root', '', 'evento');
-
-    if ($conn->connect_error) {
-        die("Error de conexión: " . $conn->connect_error);
-    }
-
     // Fetch countries and nationalities from the database
-    $sql = "SELECT pais_residencia, nacionalidad FROM paises_y_nacionalidades";
-    $result = $conn->query($sql);
-    
+    $query = "SELECT pais_residencia, nacionalidad FROM paises_y_nacionalidades";
+    $result = $db->query($query);
     $countries = [];
     $nationalities = [];
-    
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
+
+    // Use fetchAll() to get all rows and then count the results
+    $rows = $result->fetchAll();
+    if (count($rows) > 0) {
+        foreach ($rows as $row) {
             $countries[] = $row['pais_residencia'];
             $nationalities[] = $row['nacionalidad'];
         }
     }
-    $conn->close();
     ?>
-
     <form action="variable.php" method="POST">
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required><br><br>

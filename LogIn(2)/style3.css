@@ -1,0 +1,61 @@
+body {
+    background-color: #6a8a1a; /* Background color for the body */
+    color: #ffffff; /* Default text color */
+}
+
+.container {
+    background-color: #434343; /* Background for the main container */
+    color: #ffffff; /* Text color for the container */
+}
+
+h1 {
+    color: #d4d4d4; /* Heading text color */
+}
+
+table th {
+    background-color: #5c5c5c; /* Header background color for tables */
+    color: #ffffff; /* Header text color */
+}
+
+table td {
+    color: #f1f1f1; /* Table cell text color */
+}
+
+table tr:nth-child(even) {
+    background-color: #2e2e2e; /* Background color for even rows in tables */
+}
+
+form {
+    background-color: #543636; /* Form background color */
+    color: #ffffff; /* Form text color */
+    border-color: #b17e8e; /* Border color for the form */
+}
+
+input, select {
+    background-color: #333333; /* Input fields background color */
+    color: #ffffff; /* Input text color */
+    border-color: #dddddd; /* Border color for input fields */
+}
+
+label {
+    color: #cccccc; /* Label text color */
+}
+
+button {
+    background-color: #2386ca; /* Button background color */
+    color: #ffffff; /* Button text color */
+}
+
+button:hover {
+    background-color: #1a6787; /* Button background color on hover */
+}
+
+.error {
+    background-color: #f2b0b0; /* Background color for error messages */
+    color: #5a1e1e; /* Text color for error messages */
+}
+
+.success {
+    background-color: #b0f2b8; /* Background color for success messages */
+    color: #1e5a23; /* Text color for success messages */
+}
