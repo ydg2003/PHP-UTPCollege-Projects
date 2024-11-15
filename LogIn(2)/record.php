@@ -1,6 +1,7 @@
 <?php
 session_start();
-// If user is not logged in, redirect to login page
+
+// Redirect if not logged in
 if (!isset($_SESSION['id']) || !isset($_SESSION['user_name'])) {
     header("Location: index.php");
     exit();
@@ -11,38 +12,36 @@ $searchQuery = "";
 if (isset($_GET['search'])) {
     $searchQuery = $_GET['search'];
 }
-/* 
-Only excute $stmt->execute(); when the connection is made using the next format
-$db = new PDO($dsn, $username, $password);
-$db = new PDO("mysql:host=localhost;dbname=evento", "root", "");
-and the next formar does not work
-require_once 'login.php';
-try
-{
-$pdo = new PDO($attr, $user, $pass, $opts);
-}
-catch (PDOException $e)
-{
-throw new PDOException($e->getMessage(), (int)$e->getCode());
-}
-*/
+
 $db = new PDO("mysql:host=localhost;dbname=evento", "root", "");
 
-// Fetch data from 'participantes' table with search functionality
-$sql = "SELECT * FROM participantes WHERE nombre LIKE :search OR apellido LIKE :search";
-$stmt = $db->prepare($sql); // Use the $db object from db_conn.php
+// Define number of records per page
+$recordsPerPage = 10;
 
-// Define the search parameter
+// Current page number
+$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$startFrom = ($currentPage - 1) * $recordsPerPage;
+
+// Fetch data with search and pagination
+$sql = "SELECT * FROM participantes WHERE nombre LIKE :search OR apellido LIKE :search LIMIT :startFrom, :recordsPerPage";
+$stmt = $db->prepare($sql);
+
 $searchParam = "%" . $searchQuery . "%";
-
-// Bind the parameter using bindParam (PDO's method)
 $stmt->bindParam(':search', $searchParam, PDO::PARAM_STR);
-
-// Execute the statement
+$stmt->bindParam(':startFrom', $startFrom, PDO::PARAM_INT);
+$stmt->bindParam(':recordsPerPage', $recordsPerPage, PDO::PARAM_INT);
 $stmt->execute();
 
-// Fetch the results
-$result = $stmt->fetchAll(PDO::FETCH_ASSOC); // Use fetchAll for multiple results
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Count total records for pagination
+$countSql = "SELECT COUNT(*) FROM participantes WHERE nombre LIKE :search OR apellido LIKE :search";
+$countStmt = $db->prepare($countSql);
+$countStmt->bindParam(':search', $searchParam, PDO::PARAM_STR);
+$countStmt->execute();
+
+$totalRecords = $countStmt->fetchColumn();
+$totalPages = ceil($totalRecords / $recordsPerPage);
 ?>
 
 <!DOCTYPE html>
@@ -52,6 +51,30 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC); // Use fetchAll for multiple result
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Registro de Participantes</title>
+    <style>
+        .pagination {
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+            border: 1px solid #4CAF50;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+        }
+    </style>
 </head>
 <body>
     <h1>Registro de Participantes</h1>
@@ -80,7 +103,6 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC); // Use fetchAll for multiple result
         </thead>
         <tbody>
             <?php
-            // Check if $result is not empty to avoid warnings
             if (!empty($result)) {
                 foreach ($result as $row) { ?>
                     <tr>
@@ -105,6 +127,18 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC); // Use fetchAll for multiple result
             <?php } ?>
         </tbody>
     </table>
+
+    <div class="pagination">
+        <?php
+        for ($i = 1; $i <= $totalPages; $i++) {
+            if ($i == $currentPage) {
+                echo "<a class='active' href='?page=$i&search=" . urlencode($searchQuery) . "'>$i</a>";
+            } else {
+                echo "<a href='?page=$i&search=" . urlencode($searchQuery) . "'>$i</a>";
+            }
+        }
+        ?>
+    </div>
 
     <a href="download_xlsx.php">Descargar como XLSX</a>
     <a href="home.php">Volver a Inicio</a>
