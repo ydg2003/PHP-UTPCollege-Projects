@@ -1,6 +1,12 @@
 <?php //event_data_controller
-require_once 'db_conn.php';
+require_once 'login.php';
 
+// Create the database connection
+try {
+    $db = new PDO($attr, $user, $pass, $opts);
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
+}
 class EventData {
     public $nombre;
     public $apellido;
@@ -63,8 +69,9 @@ class EventData {
                 <body>
                     <p>
                         <ul>
-                            <li><a href="home.php">Home</a></li>
-                            <li><a href="registered.html">Registrados</a></li>
+                            <li><a href="form.php">Fill form</a></li>
+                            <li><a href="home.php">Return Home</a></li>
+                            <li><a href="record.php">Record</a></li>
                         </ul>
                     </p>
                 </body>

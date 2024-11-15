@@ -10,7 +10,10 @@
 <body>
     <h1>Formulario de Registro al Evento Tecnológico</h1>
     <?php
-    require_once 'db_conn.php';
+    // Include the database connection
+    require_once 'login.php';
+    // Create the database connection
+    $db = new PDO("mysql:host=localhost;dbname=evento", "root", ""); // Replace with your DB credentials
     // Connect to the database
     // Fetch countries and nationalities from the database
     $query = "SELECT pais_residencia, nacionalidad FROM paises_y_nacionalidades";
@@ -115,7 +118,8 @@
 
         <input type="submit" value="Enviar">
     </form>
-
+    <a href="record.php">Record</a>
+    <a href="home.php">Return Home</a>
     <footer>
         <p>Universidad Tecnológica de Panamá - <?php echo date('Y'); ?></p>
         <p>Dirección: Avenida Universidad Tecnológica de Panamá, Vía Puente Centenario, Campus Metropolitano Víctor Levi Sasso.</p>

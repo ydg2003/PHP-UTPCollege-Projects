@@ -1,11 +1,14 @@
-<?php //user_settings.php
-session_start();
-
+<?php
 // Include the database connection
-require_once 'db_conn.php';
+session_start();
+require_once 'login.php';
 
 // Create the database connection
-$db = new PDO("mysql:host=localhost;dbname=evento", "root", ""); // Replace with your DB credentials
+try {
+    $db = new PDO($attr, $user, $pass, $opts);
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
+}
 
 // Retrieve and Display the Users Table
 try {
@@ -15,8 +18,8 @@ try {
     echo "Error: " . $e->getMessage();
 }
 
-// Retrieve specific user details to update (Feature 2)
-$userToUpdate = null; // Initialize the user to update as null
+// Retrieve specific user details to update
+$userToUpdate = null;
 if (isset($_GET['user_name'])) {
     $userNameToUpdate = $_GET['user_name'];
     try {
@@ -28,21 +31,20 @@ if (isset($_GET['user_name'])) {
     }
 }
 
-// Feature 2: Modify User Data
+// Modify User Data
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_user'])) {
     $userId = $_POST['user_id'];
     $userName = $_POST['user_name'];
-    $name = $_POST['name'];
+    $forename = $_POST['forename'];
     $surname = $_POST['surname'];
     $identityDocument = $_POST['identity_document'];
     $email = $_POST['email'];
     $activityStatus = isset($_POST['activity_status']) ? 1 : 0;
 
     try {
-        $stmt = $db->prepare("UPDATE users SET user_name = ?, name = ?, surname = ?, identity_document = ?, email = ?, activity_status = ? WHERE id = ?");
-        $stmt->execute([$userName, $name, $surname, $identityDocument, $email, $activityStatus, $userId]);
+        $stmt = $db->prepare("UPDATE users SET user_name = ?, forename = ?, surname = ?, identity_document = ?, email = ?, activity_status = ? WHERE id = ?");
+        $stmt->execute([$userName, $forename, $surname, $identityDocument, $email, $activityStatus, $userId]);
         echo "User data updated successfully!";
-        // Refresh the page or redirect to prevent resubmission
         header("Location: user_settings.php");
         exit();
     } catch (PDOException $e) {
@@ -50,14 +52,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_user'])) {
     }
 }
 
-// Feature 3: Change User Password
+// Change User Password
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
     $userName = $_POST['user_name'];
     $oldPassword = $_POST['old_password'];
     $newPassword = $_POST['new_password'];
     $confirmPassword = $_POST['confirm_password'];
 
-    // Check if old password matches the stored password
     try {
         $stmt = $db->prepare("SELECT password FROM users WHERE user_name = ?");
         $stmt->execute([$userName]);
@@ -65,10 +66,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
 
         if ($user && password_verify($oldPassword, $user['password'])) {
             if ($newPassword === $confirmPassword) {
-                $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
-                $stmt = $db->prepare("UPDATE users SET password = ? WHERE user_name = ?");
-                $stmt->execute([$hashedPassword, $userName]);
-                echo "Password updated successfully!";
+                if (strlen($newPassword) >= 8) {
+                    $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+                    $stmt = $db->prepare("UPDATE users SET password = ? WHERE user_name = ?");
+                    $stmt->execute([$hashedPassword, $userName]);
+                    echo "Password updated successfully!";
+                } else {
+                    echo "New password must be at least 8 characters long.";
+                }
             } else {
                 echo "New passwords do not match.";
             }
@@ -80,29 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
     }
 }
 
-/*
-// Retrieve User Privileges from MySQL
-try {
-    $privilegesStmt = $db->query("SELECT user, host, Select_priv, Insert_priv, Update_priv FROM mysql.user");
-    $privileges = $privilegesStmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-}
-
-// Retrieve specific user details to update (Feature 2)
-if (isset($_GET['user_name'])) {
-    $userNameToUpdate = $_GET['user_name'];
-    try {
-        $stmt = $db->prepare("SELECT * FROM users WHERE user_name = ?");
-        $stmt->execute([$userNameToUpdate]);
-        $userToUpdate = $stmt->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }
-}
-*/
-
-// Functionality F4: Retrieve User Privileges
+// Retrieve User Privileges
 $privileges = [];
 try {
     $privilegesQuery = $db->query("SHOW GRANTS FOR CURRENT_USER()");
@@ -115,17 +98,18 @@ try {
 <html>
 <head>
     <title>User Settings</title>
+    <link rel="stylesheet" type="text/css" href="style3.css">
 </head>
 <body>
     <h1>User Settings</h1>
 
-    <!-- Feature 1: Display Users Table -->
+    <!-- Display Users Table -->
     <h2>Users Table</h2>
     <table border="1">
         <thead>
             <tr>
                 <th>User Name</th>
-                <th>Name</th>
+                <th>Forename</th>
                 <th>Surname</th>
                 <th>ID Document</th>
                 <th>Email</th>
@@ -137,26 +121,26 @@ try {
             <?php foreach ($users as $user) : ?>
             <tr>
                 <td><?= htmlspecialchars($user['user_name']) ?></td>
-                <td><?= htmlspecialchars($user['name']) ?></td>
+                <td><?= htmlspecialchars($user['forename']) ?></td>
                 <td><?= htmlspecialchars($user['surname']) ?></td>
                 <td><?= htmlspecialchars($user['identity_document']) ?></td>
                 <td><?= htmlspecialchars($user['email']) ?></td>
                 <td><?= $user['activity_status'] ? 'Active' : 'Inactive' ?></td>
                 <td>
-                    <!-- Feature 2: Link to Modify User Data -->
                     <a href="?user_name=<?= htmlspecialchars($user['user_name']) ?>">Modify</a>
                 </td>
             </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-    <!-- Feature 2: Modify User Data Form (Display only if a user is selected) -->
+
+    <!-- Modify User Data Form -->
     <?php if ($userToUpdate): ?>
     <h2>Modify User Data for <?= htmlspecialchars($userToUpdate['user_name']) ?></h2>
     <form method="post">
-        <input type="hidden" name="user_id" value="<?= htmlspecialchars($userToUpdate['id']) ?>"> <!-- Dynamic User ID -->
+        <input type="hidden" name="user_id" value="<?= htmlspecialchars($userToUpdate['id']) ?>">
         <label>User Name: <input type="text" name="user_name" value="<?= htmlspecialchars($userToUpdate['user_name']) ?>"></label><br>
-        <label>Name: <input type="text" name="name" value="<?= htmlspecialchars($userToUpdate['name']) ?>"></label><br>
+        <label>Forename: <input type="text" name="forename" value="<?= htmlspecialchars($userToUpdate['forename']) ?>"></label><br>
         <label>Surname: <input type="text" name="surname" value="<?= htmlspecialchars($userToUpdate['surname']) ?>"></label><br>
         <label>ID Document: <input type="text" name="identity_document" value="<?= htmlspecialchars($userToUpdate['identity_document']) ?>"></label><br>
         <label>Email: <input type="email" name="email" value="<?= htmlspecialchars($userToUpdate['email']) ?>"></label><br>
@@ -165,7 +149,7 @@ try {
     </form>
     <?php endif; ?>
 
-    <!-- Feature 3: Change User Password -->
+    <!-- Change User Password -->
     <h2>Change User Password</h2>
     <form method="post">
         <label>User Name: <input type="text" name="user_name" required></label><br>
@@ -175,7 +159,7 @@ try {
         <button type="submit" name="change_password">Change Password</button>
     </form>
 
-    <!-- Feature 4: Display User Privileges -->
+    <!-- Display User Privileges -->
     <h2>User Privileges</h2>
     <table border="1">
         <tr>
@@ -187,5 +171,8 @@ try {
         </tr>
         <?php endforeach; ?>
     </table>
+    <a href="form.php">Fill form</a>
+    <a href="record.php">Record</a>
+    <a href="home.php">Return Home</a>
 </body>
 </html>

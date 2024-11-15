@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 // Redirect if not logged in
 if (!isset($_SESSION['id']) || !isset($_SESSION['user_name'])) {
     header("Location: index.php");
@@ -139,8 +138,8 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         }
         ?>
     </div>
-
-    <a href="download_xlsx.php">Descargar como XLSX</a>
-    <a href="home.php">Volver a Inicio</a>
+    <a href="download_xlsx.php">Download_xlsx</a>
+    <a href="form.php">Fill form</a>
+    <a href="home.php">Return Home</a>
 </body>
 </html>
