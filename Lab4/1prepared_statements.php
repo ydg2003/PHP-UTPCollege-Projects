@@ -1,4 +1,15 @@
 <?php
+/* 
+General documentation explaining what this code does:
+This PHP script demonstrates the use of MySQLi (MySQL Improved) for database interaction. It includes:
+1. Connecting to a MySQL database using MySQLi.
+2. Error handling for connection issues.
+3. Executing non-prepared SQL statements to create and manage a table.
+4. Using prepared statements for secure and efficient data insertion into the database.
+5. Iteratively inserting multiple rows into a table using parameterized prepared statements.
+6. Fetching and displaying data from the table using a non-prepared statement.
+7. Properly closing the prepared statement to release resources.
+*/
 // Create connection
 $mysqli = new mysqli('localhost', 'root', '', 'evento');
 

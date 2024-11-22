@@ -1,4 +1,8 @@
 <?php
+/*
+This PHP script provides an HTML form for updating the phone number (celular) 
+of a participant (nombre) from the participantes table in the database.
+*/
 error_reporting(E_ALL); // Show all errors
 require_once 'login.php';
 

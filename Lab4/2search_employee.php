@@ -1,4 +1,19 @@
 <?php
+/* 
+General documentation explaining what this code does:
+
+This PHP script demonstrates a secure approach to querying a MySQL database using prepared statements with the MySQLi extension. It performs the following tasks:
+1. Establishes a connection to a MySQL database using the provided server, username, password, and database name.
+2. Sets the character encoding to UTF-8 for consistent data handling.
+3. Checks if the database connection was successful and terminates execution with an error message if not.
+4. Prepares a parameterized SQL query to search for employees with a specific first name (`firstname`).
+5. Binds a variable (`$search`) to the query parameter for safe and efficient query execution.
+6. Executes the prepared query and retrieves the results.
+7. Iterates through the results, displaying the `id`, `firstname`, and `lastname` of each matching employee.
+8. Displays "No results" if no records are found.
+9. Closes the database connection after completing all operations.
+*/
+
 $servername = "localhost";
 $username = "root";
 $password = "";

@@ -1,6 +1,12 @@
 <?php
 require_once 'login.php';
-
+/*
+This PHP script is responsible for updating the phone number (celular) 
+of a participant (participantes) in a database using PDO. The script 
+receives data from a form, prepares an SQL update query, binds parameters 
+to the query to prevent SQL injection, and executes the query to update 
+the participant's information.
+*/
 try {
     $pdo = new PDO($attr, $user, $pass, $opts);
 } catch (\PDOException $e) {
