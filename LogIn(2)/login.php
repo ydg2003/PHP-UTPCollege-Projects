@@ -1,4 +1,5 @@
-<?php //db_conn.php
+<?php 
+//login.php
  $host = 'localhost'; // Change as necessary
  $data = 'evento'; //dbname Change as necessary
  $user = 'root'; //username Change as necessary

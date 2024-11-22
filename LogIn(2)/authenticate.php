@@ -1,4 +1,5 @@
 <?php
+//authenticate.php
 error_reporting(E_ALL);
 session_start();
 require_once 'login.php';

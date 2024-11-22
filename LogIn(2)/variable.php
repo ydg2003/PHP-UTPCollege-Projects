@@ -1,4 +1,5 @@
 <?php
+/*variable.php*/
 require_once 'login.php'; // This file initializes the $db PDO object
 require_once 'event_data_controller.php';
 

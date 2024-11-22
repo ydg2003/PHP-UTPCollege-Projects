@@ -1,4 +1,5 @@
-<?php //event_data_controller
+<?php 
+//event_data_controller
 require_once 'login.php';
 
 // Create the database connection

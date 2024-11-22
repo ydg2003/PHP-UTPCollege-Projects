@@ -1,4 +1,5 @@
 <?php
+/*user_settings.php*/
 // Include the database connection
 session_start();
 require_once 'login.php';
