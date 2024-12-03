@@ -1,5 +1,5 @@
 <?php
-// setupusers2.php
+//setupusers2.php
 require_once 'login.php';
 
 try {
