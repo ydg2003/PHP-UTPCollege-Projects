@@ -1,0 +1,230 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+.header {
+    background-color: #d8ca0b;
+    color: white;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.header h1 {
+    margin: 0;
+    flex-grow: 1;
+    text-align: center;
+}
+.header select, .header button {
+    margin: 10px;
+}
+.login-button {
+    background-color: #00b6d6;
+    border: none;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.logo {
+    height: 50px; /* Ajusta la altura del logo según sea necesario */
+    margin-right: 20px;
+}
+.main-content {
+    display: flex;
+    flex: 1; /* Ocupa el espacio restante */
+}
+.nav {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    flex: 0 0 auto; /* Ancho automático para adaptarse al contenido */
+    order: -1; /* Cambia el orden para colocar primero en el flujo */
+    align-self: flex-start; /* Alinea al inicio del contenedor principal */
+}
+.nav .dropdown {
+    position: relative;
+    display: block; /* Cambia a bloque para ajustar al ancho del contenedor */
+}
+.nav .dropdown button {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    width: auto; /* Ancho automático para adaptarse al contenido */
+    text-align: left; /* Alinea el texto a la izquierda */
+}
+.nav .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+.nav .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+.nav .dropdown-content a:hover {
+    background-color: #5095fc;
+}
+.nav .dropdown:hover .dropdown-content {
+    display: block;
+}
+.main {
+    padding: 0;
+    flex: 1; /* Ocupa el espacio restante */
+}
+.banner {
+    background-color: #006d75;
+    color: white;
+    text-align: center;
+    padding: 15px;
+}
+.cartelera {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    background-image: url('path/to/your/background-image.jpg'); /* Ruta a tu imagen de fondo */
+    background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+    background-position: center; /* Centra la imagen */
+    padding: 20px; /* Agrega relleno para evitar que el contenido toque los bordes */
+}
+.cartelera div {
+    flex: 0 0 calc(33.33% - 20px);
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco semi-transparente para mejorar la legibilidad */
+    padding: 10px;
+    border-radius: 10px;
+}
+.cartelera img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+footer.footer1 {
+    background-color: #333;
+    color: white;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: auto;
+    bottom: 0px;
+    left: 0;
+    height: 95px; /* Ajusta según sea necesario */
+    padding: 10px 20px;
+    box-sizing: border-box;
+}
+
+footer.footer1 nav.footer-nav {
+    flex: 0 0 150px;
+}
+
+footer.footer1 nav.footer-nav ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+footer.footer1 nav.footer-nav ul li {
+    margin-bottom: 0px;
+}
+
+footer.footer1 nav.footer-nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+footer.footer1 nav.footer-nav ul li a:hover {
+    text-decoration: underline;
+}
+
+.footer-info {
+    flex: 1;
+    text-align: center;
+}
+
+footer.footer1 a {
+    color: white;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+footer.footer1 a:hover {
+    text-decoration: underline;
+}
+
+nav.main-nav, nav.footer-nav {
+    background-color: #444;
+    width: 100%;
+    padding: 10px 0;
+}
+
+nav.main-nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+nav.main-nav ul li {
+    margin: 0 15px;
+}
+
+nav.main-nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+nav.main-nav ul li a:hover {
+    text-decoration: underline;
+}
+
+header.banner .search-and-social {
+    display: flex;
+    align-items: center;
+}
+
+header.banner .search-icon {
+    color: white;
+    width: 50;
+    margin-right: 50px;
+    font-size: 20px;
+    text-decoration: none;
+    margin-left: 50px;
+}
+
+header.banner .social-icons img {
+    width: 30px;
+    margin-left: 10px;
+}
+
+.login-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+}

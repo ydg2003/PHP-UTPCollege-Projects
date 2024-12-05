@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!-- log.html -->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .bg {
+            background-image: url('OEFJCZCP75CZJPVSMIOLMS2UBA.jpg');
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+        }
+        img.logo {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 250px; /* Ajusta este valor al tamaño deseado */
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type=text], input[type=password] {
+            width: 100%; /* Ajusta el ancho como prefieras */
+            padding: 12px 20px; /* Aumenta el tamaño del campo */
+            margin: 8px 0; /* Espaciado entre campos */
+            display: inline-block;
+            border: 1px solid #ccc; /* Borde del campo */
+            border-radius: 4px; /* Bordes redondeados */
+            box-sizing: border-box; /* Para que el padding no afecte el ancho total */
+        }
+        input[type=submit], button {
+            width: 100%; /* Ajusta el ancho como prefieras */
+            background-color: #0033FF; /* Color de fondo */
+            color: white; /* Color de texto */
+            padding: 14px 20px; /* Aumenta el tamaño del botón */
+            margin: 8px 0; /* Espaciado entre botones */
+            border: none; /* Sin borde */
+            border-radius: 4px; /* Bordes redondeados */
+            cursor: pointer; /* Cursor en forma de mano al pasar sobre el botón */
+        }
+        .homebtn {
+            background-color: #4CAF50; /* Color de fondo diferente para el botón de home */
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg">
+    <div class="container">
+        <!-- Reemplaza 'url_tu_logo' con la URL de tu logo -->
+        <img src="logocine.png" alt="Logo" class="logo">
+        
+        <form action="login.php" method="post">
+            
+            <input type="text" id="username" name="username" placeholder="Usuario" required><br><br>
+            
+            <input type="password" id="password" name="password" placeholder="Contraseña" required><br><br>
+            
+            <input type="submit" value="Iniciar sesión">
+            
+            <button type="button" onclick="window.location.href='reg.html';">Registrarse</button>
+            
+            <button type="button" onclick="window.location.href='home.html';">Inicio</button>
+            
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
