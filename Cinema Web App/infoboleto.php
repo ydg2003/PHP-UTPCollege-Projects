@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- consultticket -->
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -85,6 +86,7 @@
                 <input type="submit" value="Buscar Boleto">
             </form>
             <?php
+            //consultticket.php
                 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['boleto'])) {
                     $boletoId = $_GET['boleto'];
                     if (!empty($boletoId)) {

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- buy ticket.php -->
 <html lang="es">
 <head>
     <meta charset="UTF-8">
